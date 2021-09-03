@@ -11,9 +11,25 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('From Submited :>> ');
-    
-  }
+    //Validate Form Input is not Empty
+    if (!input) {
+      //display Alert  
+    }
+    else if (input && isEdit) {
+      //Edit Item
 
+    }
+    else {
+      //Add Item
+      //1-show Alert
+      const newItem = {
+        id: new Date().getTime().toString(),
+        title: input
+      };
+      setList([...list, newItem]);
+      setInput('');
+    }
+  }
 
 
   return (
@@ -28,6 +44,7 @@ function App() {
           <input
             type="text"
             placeholder="e.g. Bread"
+            className="grocery"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -35,10 +52,12 @@ function App() {
         </div>
       </form>
       {/* List */}
-      <div className="grocery-container">
-        <List />
-        <button className="clear-btn" onClick={null}>Clear Items</button>
-      </div>
+      {list.length > 0 &&
+        <div className="grocery-container">
+          <List items={list} />
+          <button className="clear-btn" onClick={null}>Clear Items</button>
+        </div>
+      }
     </section>
   );
 }
