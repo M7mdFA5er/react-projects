@@ -7,6 +7,7 @@ function App() {
   const [input, setInput] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [list, setList] = useState([]);
+  const [editID, setEditID] = useState(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -28,7 +29,15 @@ function App() {
     }
     else if (input && isEdit) {
       //Edit Item
-
+      setList(list.map((item) => {
+        if (item.id === editID)
+          return { ...item, title: input };
+        return item;
+      }));
+      setEditID(null);
+      setIsEdit(false);
+      setInput('');
+      setAlert({ show: true, msg: 'Value Changed!', type: 'success' });
     }
     else {
       //Add Item
@@ -54,6 +63,13 @@ function App() {
     setList(list.filter((item) => item.id !== id));
   };
 
+  const handleEditItem = (id) => {
+    const editItem = list.find((item) => item.id === id);
+    setIsEdit(true);
+    setEditID(id);
+    setInput(editItem.title);
+  }
+
 
   return (
     <section className="section-center">
@@ -77,7 +93,7 @@ function App() {
       {/* List */}
       {list.length > 0 &&
         <div className="grocery-container">
-          <List items={list} removeItem={handleRemoveItem} />
+          <List items={list} removeItem={handleRemoveItem} editItem={handleEditItem} />
           <button className="clear-btn" onClick={handleDeleteItems}>Clear Items</button>
         </div>
       }
