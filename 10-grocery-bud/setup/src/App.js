@@ -49,6 +49,11 @@ function App() {
     setAlert({ show: true, msg: 'All Items cleared!', type: 'danger' });
   }
 
+  const handleRemoveItem = (id) => {
+    setAlert({ show: true, msg: 'Item Deleted', type: 'danger' });
+    setList(list.filter((item) => item.id !== id));
+  };
+
 
   return (
     <section className="section-center">
@@ -72,7 +77,7 @@ function App() {
       {/* List */}
       {list.length > 0 &&
         <div className="grocery-container">
-          <List items={list} />
+          <List items={list} removeItem={handleRemoveItem} />
           <button className="clear-btn" onClick={handleDeleteItems}>Clear Items</button>
         </div>
       }
