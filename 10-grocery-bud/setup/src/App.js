@@ -8,12 +8,23 @@ function App() {
   const [isEdit, setIsEdit] = useState(false);
   const [list, setList] = useState([]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAlert({ show: false, msg: '', type: '' })
+    }, 3000);
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [alert.show])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('From Submited :>> ');
     //Validate Form Input is not Empty
     if (!input) {
       //display Alert  
+      setAlert({ show: true, msg: 'Please Enter A Value!', type: 'danger' });
     }
     else if (input && isEdit) {
       //Edit Item
@@ -21,7 +32,7 @@ function App() {
     }
     else {
       //Add Item
-      //1-show Alert
+      setAlert({ show: true, msg: 'Item Added', type: 'success' });
       const newItem = {
         id: new Date().getTime().toString(),
         title: input
@@ -31,11 +42,18 @@ function App() {
     }
   }
 
+  const handleDeleteItems = () => {
+    //Delete Items
+    setList([]);
+    //Show Alert
+    setAlert({ show: true, msg: 'All Items cleared!', type: 'danger' });
+  }
+
 
   return (
     <section className="section-center">
       {/* Alert */}
-      {alert.show && <Alert />}
+      {alert.show && <Alert {...alert} />}
       {/* Form */}
       <form className="grocery-form" onSubmit={handleSubmit}>
         {/* title */}
@@ -55,7 +73,7 @@ function App() {
       {list.length > 0 &&
         <div className="grocery-container">
           <List items={list} />
-          <button className="clear-btn" onClick={null}>Clear Items</button>
+          <button className="clear-btn" onClick={handleDeleteItems}>Clear Items</button>
         </div>
       }
     </section>
