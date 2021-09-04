@@ -2,11 +2,20 @@ import React, { useState, useEffect } from 'react'
 import List from './List'
 import Alert from './Alert'
 
+const getLocalStorage = () => {
+  let list = localStorage.getItem('list');
+  if (list) {
+    return JSON.parse(localStorage.getItem('list'));
+  } else {
+    return [];
+  }
+}
+
 function App() {
   const [alert, setAlert] = useState({ show: false, msg: '', type: '' });
   const [input, setInput] = useState('');
   const [isEdit, setIsEdit] = useState(false);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(getLocalStorage);
   const [editID, setEditID] = useState(null);
 
   useEffect(() => {
@@ -17,6 +26,10 @@ function App() {
       clearTimeout(timeout);
     }
   }, [alert.show])
+
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(list));
+  }, [list]);
 
 
   const handleSubmit = (e) => {
