@@ -27,7 +27,7 @@ const AppProvider = ({ children }) => {
   }
 
   const increase = (id) => {
-    dispatch({ type: 'ICREASE_ITEM', payload: id })
+    dispatch({ type: 'INCREASE_ITEM', payload: id })
   }
 
   const decrease = (id) => {
