@@ -16,9 +16,8 @@ export const usePagination = (data, itemsPerPage) => {
   }
 
   const jump = (page) => {
-    setCurrentPage((currentPage) => {
-      Math.min(Math.max(1, page), maxPage)
-    })
+    const pageNumber = Math.max(1, page);
+    setCurrentPage((currentPage) => Math.min(pageNumber, maxPage));
   }
 
   const begin = (currentPage - 1) * itemsPerPage;
