@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-export const useFetch = (url) => {
+export const useFetch = (url, query, page) => {
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -17,7 +17,9 @@ export const useFetch = (url) => {
         const newData = await response.json();
         console.log('url :>> ', url);
         setData((oldData) => {
-          return [...oldData, ...newData]
+          if (query && page === 1) return newData.results;
+          else if (query) return [...oldData, ...newData.results]
+          else return [...oldData, ...newData]
         })
         setLoading(false);
       } catch (error) {
