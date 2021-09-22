@@ -1,7 +1,13 @@
 import React from 'react'
 import { useGlobalContext } from './context'
+import useFetch from './useFetch';
+
+
 const SearchForm = () => {
-  return <h2>search component</h2>
+  const { url } = useGlobalContext();
+  const { data } = useFetch({ url });
+
+  return (<h2>search component</h2>)
 }
 
 export default SearchForm
