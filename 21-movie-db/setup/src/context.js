@@ -4,7 +4,20 @@ export const API_ENDPOINT = `https://www.omdbapi.com/?apikey=${process.env.REACT
 const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
-  return <AppContext.Provider value='hello'>{children}</AppContext.Provider>
+  const [error, setError] = useState({ show: false, msg: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [query, setQuery] = useState('batman');
+
+
+  return (
+    <AppContext.Provider value={{
+      setIsLoading,
+      setError
+
+    }}>
+      {children}
+    </AppContext.Provider>
+  )
 }
 // make sure use
 export const useGlobalContext = () => {
