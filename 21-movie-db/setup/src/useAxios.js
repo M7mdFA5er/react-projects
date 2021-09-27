@@ -4,6 +4,15 @@ import { API_ENDPOINT, useGlobalContext } from './context'
 
 axios.defaults.baseURL = API_ENDPOINT;
 
+export const useAxios3 = (params = {}, depndances = [], processData = null) => {
+
+
+
+
+}
+
+
+
 
 export const useAxios = (axiosParams) => {
   const [response, setResponse] = useState(undefined);
