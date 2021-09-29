@@ -1,6 +1,10 @@
 import React from 'react'
 import { useGlobalContext } from './context'
+import { useFetch } from './useFetch';
+
+
 const SearchForm = () => {
+
   const { query, setQuery, error } = useGlobalContext();
   return (
     <form className='search-form' onSubmit={(e) => e.preventDefault()}>
@@ -8,6 +12,7 @@ const SearchForm = () => {
       <input type="text" className='form-input' value={query} onChange={(e) => setQuery(e.target.value)} />
     </form>
   )
+
 }
 
 export default SearchForm
