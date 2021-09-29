@@ -8,7 +8,7 @@ function App() {
   return (
     <Switch>
       <Route path='/' exact><Home /></Route>
-      <Route path='/movie/:id'><Movie /></Route>
+      <Route path='/movies/:id'><Movie /></Route>
     </Switch>
   )
 }
