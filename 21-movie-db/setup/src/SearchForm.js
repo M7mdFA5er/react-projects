@@ -1,6 +1,10 @@
 import React from 'react'
 import { useGlobalContext } from './context'
+import { useFetch } from './useFetch';
+
+
 const SearchForm = () => {
+
   const { query, setQuery, error } = useGlobalContext();
   return (
     <form className='search-form' onSubmit={(e) => e.preventDefault()}>
@@ -9,6 +13,7 @@ const SearchForm = () => {
       {error.show && <div className='error'>{error.msg}</div>}
     </form>
   )
+
 }
 
 export default SearchForm
