@@ -4,24 +4,15 @@ import { useFetch } from './useFetch';
 
 
 const SearchForm = () => {
-  const { url, setError, error, setMovies } = useGlobalContext();
 
-  const processData = (rawData) => {
-    if (rawData.Response === 'True') {
-      return rawData.Search;
-    }
-    else {
-      setError({ show: true, msg: data.Error });
-    }
-  }
+  const { query, setQuery, error } = useGlobalContext();
+  return (
+    <form className='search-form' onSubmit={(e) => e.preventDefault()}>
+      <h2>search movies</h2>
+      <input type="text" className='form-input' value={query} onChange={(e) => setQuery(e.target.value)} />
+    </form>
+  )
 
-  const data = useFetch({ url, init: null, processData });
-
-
-  if (!error.show) setMovies(data);
-  console.log('data :>> ', data);
-
-  return (<h2>search component</h2>)
 }
 
 export default SearchForm
