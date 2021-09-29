@@ -1,52 +1,39 @@
-import { useState, useEffect, useCallback } from "react";
-import { useGlobalContext } from "./context";
 
-export const useFetch = ({ url, init, processData }) => {
-  console.log('processData :>> ', init);
-  // Response state
-  const [data, setData] = useState();
-  // useGlobalContext Hook
-  const { setLoading, setError } = useGlobalContext();
+import React, { useState, useEffect } from 'react'
 
-  // Turn objects into strings for useCallback & useEffect dependencies
-  const [stringifiedUrl, stringifiedInit] = [JSON.stringify(url), JSON.stringify(init)];
+const API_ENDPOINT = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_MOVIE_API_KEY}`
 
-  // If no processing function is passed just return the data
-  // The callback hook ensures that the function is only created once
-  // and hence the effect hook below doesn't start an infinite loop
-  const processJson = useCallback(processData || ((jsonBody) => jsonBody), []);
+function useFetch(urlParams) {
+
+  const [error, setError] = useState({ show: false, msg: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  const fetchData = async (url) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.Response === 'True') {
+        setData(data.Search || data);
+        setError({ show: false, msg: '' });
+      }
+      else {
+        setError({ show: true, msg: data.Error })
+      }
+      setIsLoading(false);
+      console.log('data :>> ', data);
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+  }
 
   useEffect(() => {
-    // Define asynchronous function
-    const fetchApi = async () => {
-      setLoading(true);
-      setError({ show: false, msg: '' });
-      try {
-        // Fetch data from REST API
-        const response = await fetch(url, init);
+    fetchData(`${API_ENDPOINT}&s=${urlParams}`)
+  }, [urlParams])
 
-        if (response.status === 200) {
-          // Extract json
-          const rawData = await response.json();
-          const processedData = processJson(rawData);
-          setData(processedData);
-          setLoading(false);
-        } else {
-          console.error(`Error ${response.status} ${response.statusText}`);
-          setError({ show: true, msg: response });
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error(`Error ${error}`);
-        setError({ show: true, msg: error });
-        setLoading(false);
-      }
-    };
+  return { isLoading, error, data }
+}
 
-    // Call async function
-    fetchApi();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedUrl, stringifiedInit, processJson]);
+export default useFetch
 
-  return data;
-};
