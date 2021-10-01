@@ -24,6 +24,18 @@ const reducer = (state, action) => {
       return { ...state, query: payload.query, page: 0 }
     }
 
+    case HANDLE_PAGE: {
+      let newPage = 0;
+      if (payload.value === 'inc') {
+        newPage = state.page + 1;
+        if (newPage > state.nbPages - 1) newPage = 0;
+      } else {
+        newPage = state.page - 1;
+        if (newPage < 0) newPage = 0;
+      }
+      return { ...state, page: newPage }
+    }
+
     default:
       throw new Error(`no matching ${type} action type`)
   }
