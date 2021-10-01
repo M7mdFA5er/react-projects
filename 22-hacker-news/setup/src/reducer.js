@@ -17,8 +17,11 @@ const reducer = (state, action) => {
 
     case REMOVE_STORY: {
       const newHits = state.hits.filter((story) => story.objectID !== payload.id);
-      console.log('newhits :>> ', newHits);
       return { ...state, hits: newHits }
+    }
+
+    case HANDLE_SEARCH: {
+      return { ...state, query: payload.query, page: 0 }
     }
 
     default:
